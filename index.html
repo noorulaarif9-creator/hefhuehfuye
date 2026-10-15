@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Birthday SIR...!!💗💎</title>
+    <!-- Premium Google Fonts for Romantic Love Theme -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Great+Vibes&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           1. VARIABLES, THEME & SYSTEM RESET
+           ========================================================================== */
+        :root {
+            --bg-dark: #120524;
+            --bg-gradient-mid: #2A0E4E;
+            --accent-pink: #FF4F81;
+            --accent-rose: #FF1493;
+            --accent-glow: rgba(255, 79, 129, 0.7);
+            --glass-bg: rgba(255, 255, 255, 0.07);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --text-main: #FFFFFF;
+            --text-muted: #FFD3E2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+            overflow-x: hidden;
+            position: relative;
+            background: radial-gradient(circle at center, var(--bg-gradient-mid) 0%, var(--bg-dark) 100%);
+        }
+
+        html { height: -webkit-fill-available; }
+        .hidden { display: none !important; }
+
+        /* ==========================================================================
+           2. GLOBAL INTERFACE EFFECTS
+           ========================================================================== */
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-dark);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            padding: 20px;
+        }
+        .loading-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(1.05);
+        }
+        .loader-heart {
+            font-size: clamp(3rem, 10vw, 4rem);
+            animation: heartBeat 1.2s infinite alternate cubic-bezier(0.25, 0.8, 0.25, 1);
+            filter: drop-shadow(0 0 15px var(--accent-pink));
+        }
+
+        .ambient-glow {
+            position: fixed;
+            width: clamp(200px, 50vw, 300px);
+            height: clamp(200px, 50vw, 300px);
+            background: #9D4EDD;
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(100px);
+            opacity: 0.3;
+            z-index: 1;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease-out;
+        }
+
+        .particle-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .floating-heart {
+            position: absolute;
+            bottom: -50px;
+            pointer-events: none;
+            animation: floatUp linear forwards;
+        }
+
+        .music-toggle {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: transform 0.2s ease;
+        }
+        .music-toggle:hover { transform: scale(1.1); }
+        .music-toggle.playing span { animation: spinNote 2s linear infinite; }
+
+        /* ==========================================================================
+           3. CONTAINER & GLASS CARDS
+           ========================================================================== */
+        .app-container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 15px 30px 15px;
+            z-index: 5;
+            position: relative;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 550px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.9) translateY(20px);
+            transition: opacity 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .page.active {
+            opacity: 1 !important;
+            transform: scale(1) translateY(0) !important;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(140%);
+            -webkit-backdrop-filter: blur(20px) saturate(140%);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: clamp(25px, 6vw, 40px) clamp(15px, 4vw, 30px);
+            width: 100%;
+            box-shadow: 0 10px 40px 0 rgba(255, 79, 129, 0.15);
+        }
+
+        /* ==========================================================================
+           4. TYPOGRAPHY & BUTTONS
+           ========================================================================== */
+        .cursive-heading {
+            font-family: 'Great Vibes', cursive;
+            color: #FFF;
+            text-align: center;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            line-height: 1.2;
+        }
+        .modern-title {
+            font-family: 'Dancing Script', cursive;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFF 30%, #FFB3C6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glow-text { filter: drop-shadow(0 0 10px var(--accent-glow)); }
+        .size-lg { font-size: clamp(2.2rem, 8vw, 3.2rem); }
+        .size-xl { font-size: clamp(2.8rem, 10vw, 4rem); }
+
+        .sub-text {
+            font-size: clamp(1rem, 3.5vw, 1.15rem);
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-style: italic;
+            text-align: center;
+        }
+
+        .gift-tag {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.4rem;
+            color: #FFB3C6;
+            text-align: center;
+            margin-top: -5px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .btn-glow {
+            background: linear-gradient(135deg, var(--accent-pink) 0%, var(--accent-rose) 100%);
+            color: #FFF;
+            border: none;
+            border-radius: 50px;
+            padding: clamp(12px, 3.5vw, 16px) clamp(24px, 6vw, 36px);
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(255, 20, 147, 0.3);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+        .btn-glow:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--accent-glow); }
+
+        .mt-lg { margin-top: 20px; }
+        .text-center { text-align: center; }
+
+        .img-wrapper {
+            width: clamp(160px, 45vw, 220px);
+            height: clamp(160px, 45vw, 220px);
+            margin: 15px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: floatUpSlow 4s ease-in-out infinite alternate;
+        }
+        .hero-png { max-width: 100%; max-height: 100%; object-fit: contain; }
+        
+        .input-group {
+            display: flex;
+            background: rgba(0,0,0,0.4);
+            border-radius: 50px;
+            padding: 4px;
+            border: 1px solid rgba(255, 79, 129, 0.3);
+        }
+        .input-group input {
+            background: transparent; border: none; outline: none; padding: 0 15px; color: #FFF; flex-grow: 1; font-size: 0.95rem;
+        }
+
+        /* ==========================================================================
+           5. QUIZ INTERFACE & DYNAMIC FEEDBACK SHIELD
+           ========================================================================== */
+        .top-progress-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 5px; background: rgba(255, 255, 255, 0.05); z-index: 999; opacity: 0; transition: opacity 0.4s ease;
+        }
+        .top-progress-container.visible { opacity: 1; }
+        .top-progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #FF1493, var(--accent-pink)); transition: width 0.3s ease; }
+
+        .question-text {
+            font-family: 'Dancing Script', cursive; font-size: clamp(1.5rem, 5vw, 1.9rem); font-weight: 700; color: #FFF; margin-bottom: 25px; line-height: 1.4; text-align: center;
+        }
+        .quiz-options { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+        
+        .option-btn {
+            text-align: left; padding: 14px 20px; border-radius: 15px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: #FFF; font-size: 0.95rem; cursor: pointer; transition: all 0.2s ease; width: 100%;
+        }
+        .option-btn:hover { background: rgba(255,255,255,0.12); border-color: var(--accent-pink); }
+
+        .feedback-overlay {
+            position: fixed; inset: 0; background: rgba(10,3,22,0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 5000; display: flex; justify-content: center; align-items: center; padding: 20px;
+        }
+        .feedback-card {
+            background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border); border-radius: 24px; padding: 30px; text-align: center; max-width: 340px; width: 100%; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        .feedback-gif { width: 160px; height: 160px; object-fit: contain; margin: 0 auto 15px; filter: drop-shadow(0 5px 15px rgba(255,79,129,0.4)); }
+        .feedback-status-text { font-family: 'Dancing Script', cursive; font-size: 1.8rem; font-weight: 700; margin-bottom: 15px; }
+
+        /* ==========================================================================
+           6. PROPOSAL FRAMEWORK & REALISTIC BALLOON YARD
+           ========================================================================== */
+        .proposal-container { position: relative; width: 100%; min-height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .proposal-actions { position: relative; display: flex; justify-content: center; align-items: center; gap: 20px; width: 100%; min-height: 120px; margin-top: 20px; }
+        
+        #proposal-no {
+            background: rgba(255, 255, 255, 0.08); color: #FFB3C6; border: 1px solid rgba(255, 79, 129, 0.4); border-radius: 50px; cursor: pointer; z-index: 9999; padding: 12px 30px; font-weight: 600;
+            transition: left 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Realistic Balloon Architecture */
+        .balloon-yard { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 35px 20px; 
+            width: 100%; 
+            max-width: 440px;
+            margin: 0 auto;
+            justify-items: center; 
+        }
+        .balloon-node { 
+            position: relative; 
+            width: 85px; 
+            height: 140px; 
+            cursor: pointer; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .balloon-body {
+            width: 80px;
+            height: 98px;
+            border-radius: 50% 50% 50% 50% / 42% 42% 58% 58%;
+            position: relative;
+            box-shadow: inset -10px -14px 20px rgba(0,0,0,0.45), 0 10px 20px rgba(0,0,0,0.3);
+            animation: swingBalloon 3.2s ease-in-out infinite alternate;
+            transform-origin: top center;
+        }
+        /* Glossy Highlight Reflection */
+        .balloon-body::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 14px;
+            width: 16px;
+            height: 26px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            filter: blur(1px);
+            transform: rotate(-30deg);
+        }
+        /* Knot Base */
+        .balloon-body::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 6px;
+            background: inherit;
+            border-radius: 0 0 4px 4px;
+            filter: brightness(0.85);
+        }
+        /* Realistic Curled String */
+        .balloon-string {
+            width: 2px;
+            height: 38px;
+            background: rgba(255, 255, 255, 0.35);
+            margin-top: -2px;
+            transform-origin: top center;
+            animation: swingString 3.2s ease-in-out infinite alternate;
+        }
+
+        /* Adaptive Polaroid Modal matching Image Aspect Ratio */
+        .polaroid-overlay { 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(10, 3, 22, 0.88); 
+            backdrop-filter: blur(10px); 
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 3000; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 20px; 
+        }
+        .polaroid-frame { 
+            background: #FFFFFF; 
+            padding: 14px 14px 30px 14px; 
+            box-shadow: 0 25px 60px rgba(0,0,0,0.7); 
+            width: 100%; 
+            max-width: 320px; 
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .polaroid-img-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background: #000;
+            border-radius: 2px;
+        }
+        .polaroid-img { 
+            width: 100%; 
+            height: auto; 
+            max-height: 360px;
+            display: block;
+            object-fit: contain; 
+        }
+        .polaroid-caption { 
+            font-family: 'Dancing Script', cursive; 
+            color: #222; 
+            font-size: 1.6rem; 
+            text-align: center; 
+            margin-top: 14px; 
+            font-weight: 700; 
+            width: 100%;
+        }
+
+        .letter-paper { 
+            background: #FFFDF3; 
+            color: #2F1B1B; 
+            border-radius: 20px; 
+            padding: 20px; 
+            height: clamp(280px, 45vh, 350px); 
+            overflow-y: auto; 
+            box-shadow: inset 0 0 20px rgba(255,79,129,0.05), 0 10px 20px rgba(0,0,0,0.3); 
+            scroll-behavior: smooth;
+        }
+        .letter-text { 
+            font-family: 'Dancing Script', cursive; 
+            font-size: clamp(1.25rem, 4vw, 1.5rem); 
+            line-height: 1.5; 
+            font-weight: 600; 
+            white-space: pre-line; 
+            color: #3A1F2D; 
+        }
+        
+        /* Smooth blinking cursor effect for typing */
+        .cursor-blink::after {
+            content: '|';
+            animation: blinkCursor 0.7s infinite;
+            color: var(--accent-pink);
+            font-weight: bold;
+            margin-left: 2px;
+        }
+
+        /* Keyframes */
+        @keyframes heartBeat { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
+        @keyframes spinNote { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg) scale(0.6); opacity: 0; } 10% { opacity: 0.6; } 100% { transform: translateY(-105vh) rotate(360deg) scale(1.1); opacity: 0; } }
+        @keyframes floatUpSlow { 0% { transform: translateY(0); } 100% { transform: translateY(-8px); } }
+        @keyframes swingBalloon { 0% { transform: rotate(-5deg); } 100% { transform: rotate(5deg); } }
+        @keyframes swingString { 0% { transform: rotate(3deg); } 100% { transform: rotate(-3deg); } }
+        @keyframes blinkCursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        @media (max-width: 400px) {
+            .proposal-actions { flex-direction: column; min-height: 150px; gap: 10px; }
+            .balloon-yard { grid-template-columns: repeat(2, 1fr); max-width: 300px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="top-progress-bar" class="top-progress-container">
+        <div id="top-progress-fill" class="top-progress-fill"></div>
+    </div>
+
+    <div id="loading-screen" class="loading-screen">
+        <div class="loader-heart">❤️️</div>
+        <p style="margin-top:12px; font-family:'Dancing Script', cursive; font-size:1.5rem; color:var(--text-muted);">Loading Love Journey...</p>
+    </div>
+
+    <div id="ambient-glow" class="ambient-glow"></div>
+    <div id="particle-container" class="particle-container"></div>
+    
+    <button id="music-toggle" class="music-toggle" aria-label="Toggle Music"><span>🎵</span></button>
+    <!-- Background Audio Asset with Multiple Fallback Sources -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="assets/bgm-1.mp3" type="audio/mpeg">
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf756.mp3?filename=romantic-ambient-111142.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="pop-sound" preload="auto">
+        <source src="assets/bgm-1.mp3" type="audio/mpeg">
+        <source src="https://cdn.pixabay.com/download/sound-effect/2021/08/04/sound_eff_156070.mp3?filename=pop-39222.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- INLINE QUIZ RESPONSE OVERLAY MODAL -->
+    <div id="quiz-feedback-popup" class="feedback-overlay hidden">
+        <div class="feedback-card">
+            
+            <img id="feedback-image-slot" src="" class="feedback-gif" alt="Feedback Reaction">
+            <div id="feedback-status" class="feedback-status-text"></div>
+            <button id="feedback-continue-btn" class="btn-glow" style="width:100%;">Continue 💕</button>
+        </div>
+    </div>
+
+    <div id="global-polaroid-modal" class="polaroid-overlay hidden">
+        <div id="polaroid-card-target" class="polaroid-frame"></div>
+        <button id="close-polaroid-btn" class="btn-glow mt-lg">Next Image 💖</button>
+    </div>
+
+    <main class="app-container">
+
+        <!-- PAGE 1: WELCOME SCREEN -->
+        <section id="page-1" class="page active">
+            <h1 class="cursive-heading glow-text size-lg modern-title">𝐻𝑎𝑝𝑝𝑦𝑦 𝐵𝑖𝑟𝑡ℎ𝑑𝑎𝑦𝑦 𝑆𝐼𝑅...!!💗💎</h1>
+            <div class="gift-tag">Gift No:1</div>
+            <div class="img-wrapper"><img src="assets/love-img.png" onerror="this.src='https://placehold.co/200x200/FF4F81/FFF?text=Our+Love'" alt="Welcome" class="hero-png"></div>
+            <div class="glass-card">
+                <div class="input-group">
+                    <input type="password" id="secret-password" placeholder="Enter Secret Code ✨" autocomplete="off">
+                    <button id="login-btn" class="btn-glow">Enter</button>
+                </div>
+                <p id="password-hint" class="hint-text hidden" style="text-align:center; color:var(--accent-pink); margin-top:10px;">Hint: Password is 1408 💕</p>
+            </div>
+        </section>
+
+        <!-- PAGE 2: GREETING SCREEN -->
+        <section id="page-2" class="page hidden">
+            <div class="glass-card text-center">
+                <h2 class="cursive-heading size-lg modern-title">𝐻𝑎𝑝𝑝𝑦𝑦 𝐵𝑖𝑟𝑡ℎ𝑑𝑎𝑦𝑦 𝑆𝐼𝑅...!!💗💎</h2>
+                <p class="sub-text mt-lg">𝑊𝑖𝑠ℎ 𝑦𝑜𝑢𝑢 𝑀𝑎𝑛𝑦 𝐻𝑎𝑝𝑝𝑦𝑦 𝑅𝑒𝑡𝑢𝑟𝑛𝑠 𝑂𝑓 𝑇ℎ𝑒 𝐷𝑎𝑦𝑦 𝑇ℎ𝑎𝑛𝑔𝑜𝑜𝑜 𝐿𝑜𝑣𝑒 𝑌𝑜𝑢𝑢 𝐴 𝑙𝑜𝑡𝑡𝑡𝑡 𝑀𝑢𝑢𝑢𝑢😘🌷</p>
+                <button id="to-page-3" class="btn-glow mt-lg">Let's Proceed 💕</button>
+            </div>
+        </section>
+
+        <!-- PAGE 3: PROPOSAL FRAMEWORK -->
+        <section id="page-3" class="page hidden">
+            <div class="proposal-container text-center">
+                <h2 class="cursive-heading size-xl glow-text modern-title">𝑊𝑖𝑙𝑙 𝑦𝑜𝑢𝑢 𝐵𝑒𝑒 𝑀𝑦𝑦 𝐵𝑒𝑡𝑡𝑒𝑟 𝐻𝑎𝑙𝑓 ?</h2>
+                <p class="sub-text">Are you ready to be my better half? 💍✨</p>
+                <div class="proposal-actions">
+                    <button id="proposal-yes" class="btn-glow btn-lg" style="padding:12px 35px; border-radius:50px;">YES! 💖</button>
+                    <button id="proposal-no">NO 🥺</button>
+                </div>
+            </div>
+
+            <div id="heart-popup" class="modal-overlay hidden" style="position:fixed; inset:0; background:rgba(10,3,22,0.85); display:flex; justify-content:center; align-items:center; z-index:4000; padding:20px;">
+                <div class="glass-card text-center" style="max-width: 380px;">
+                    <h3 class="cursive-heading size-lg modern-title">Congratulations 🎉</h3>
+                    <p class="sub-text" style="color:#FFF;">You Win My Whole Heart! 🧸</p>
+                    <button id="to-page-4" class="btn-glow mt-lg">Let's see how much u know me ??? 😉</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 4: QUIZ ENGINE -->
+        <section id="page-4" class="page hidden">
+            <div class="glass-card">
+                <div id="quiz-active-interface">
+                    <h3 id="quiz-question" class="question-text">Loading Love Question...</h3>
+                    <div class="quiz-options">
+                        <button class="option-btn" data-idx="0">Option 1</button>
+                        <button class="option-btn" data-idx="1">Option 2</button>
+                        <button class="option-btn" data-idx="2">Option 3</button>
+                        <button class="option-btn" data-idx="3">Option 4</button>
+                    </div>
+                </div>
+                
+                <div id="quiz-score-interface" class="hidden text-center">
+                    <div class="img-wrapper" style="margin: 0 auto 15px;"><img id="score-gif" src="" onerror="this.src='https://placehold.co/180x180/FF4F81/FFF?text=Congrats!'" class="hero-png" alt="Score Asset"></div>
+                    <div class="sub-text" style="font-size:2.2rem; color:#FFF; font-weight:700;"><span id="live-score">0</span> / 100</div>
+                    <button id="to-page-5" class="btn-glow mt-lg">See Our Memories 🗓️</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 5: BALLOONS POPPING GALLERY -->
+        <section id="page-5" class="page hidden">
+            <div class="glass-card text-center" style="background:transparent; border:none; box-shadow:none; padding: 0;">
+                <h2 class="cursive-heading size-lg modern-title" style="margin-bottom:20px;">Pop Balloons to Unlock Memories 🎈</h2>
+                <div id="balloon-yard" class="balloon-yard"></div>
+                <button id="to-page-6" class="btn-glow mt-lg hidden" style="width: 100%;">Read My Heart Letter ✉️</button>
+            </div>
+        </section>
+
+        <!-- PAGE 6: CHRONICLE LETTER -->
+        <section id="page-6" class="page hidden">
+            <div class="glass-card text-center" style="position:relative;">
+                <button id="skip-typewriter" style="position:absolute; top:-45px; right:0; background:rgba(255,255,255,0.1); border:1px solid var(--glass-border); color:#FFF; padding:6px 14px; border-radius:50px; font-size:0.8rem; cursor:pointer;">Skip</button>
+                <div class="letter-paper" id="letter-scroller">
+                    <div id="typewriter-content" class="letter-text cursor-blink"></div>
+                </div>
+                <button id="loop-back" class="btn-glow mt-lg hidden" style="width:100%;">Restart Journey 🔄</button>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        const QUIZ_DATA = [
+            { q: "1. 𝑁𝑎𝑚𝑚𝑎 𝐴𝑛𝑛𝑖𝑣𝑒𝑟𝑠𝑎𝑟𝑦 𝐷𝑎𝑡𝑒", opts: ["𝐴: 14.08.2025", "𝐵: 15.08.2025", "𝐶: 14.10.2025", "𝐷: 16.09.2025"], a: 0 },
+            { q: "2. 𝑌𝑎𝑎𝑟𝑢𝑢 𝑅𝑜𝑚𝑏𝑎𝑎 𝑠𝑒𝑛𝑠𝑖𝑡𝑖𝑣𝑒", opts: ["𝐴: 𝑁𝑒𝑒", "𝐵: 𝑁𝑎𝑎", "𝐶: 𝑅𝑒𝑛𝑑𝑢 𝑝𝑒𝑟𝑢𝑚𝑚", "𝐷: (None)"], a: 1 },
+            { q: "3. 𝑌𝑎𝑎𝑟𝑢𝑢 𝑟𝑜𝑚𝑏𝑎𝑎 𝑒𝑓𝑓𝑜𝑟𝑡𝑠 𝑝𝑜𝑑𝑢𝑣𝑎𝑎", opts: ["𝐴: 𝑁𝑎𝑎", "𝐵: 𝑁𝑒𝑒𝑒", "𝐶: 𝑌𝑎𝑎𝑟𝑢𝑚𝑒𝑦𝑦 𝑖𝑙𝑙𝑎𝑎", "𝐷: (None)"], a: 1 },
+            { q: "4. 𝑌𝑎𝑎𝑟𝑢𝑘𝑢𝑢 𝐿𝑜𝑣𝑒 𝑎𝑡ℎ𝑖𝑔𝑎𝑚𝑚", opts: ["𝐴: 𝑢𝑛𝑎𝑘𝑘𝑢𝑢", "𝐵: 𝐸𝑛𝑎𝑘𝑘𝑢𝑢", "𝐶: 𝑅𝑒𝑛𝑑𝑢 𝑝𝑒𝑟𝑢𝑘𝑘𝑢𝑚𝑚", "𝐷: (None)"], a: 0 },
+            { q: "5. 𝑌𝑎𝑎𝑟𝑢𝑢 𝑁𝑒𝑟𝑎𝑦𝑎𝑎 𝐺𝑖𝑓𝑡𝑠 𝐾𝑢𝑑𝑢𝑝𝑝𝑎𝑎", opts: ["𝐴: 𝑁𝑒𝑒𝑒", "𝐵: 𝑁𝑎𝑎", "𝐶: 𝑅𝑒𝑛𝑑𝑢𝑢 𝑝𝑒𝑟𝑢𝑚𝑒𝑦𝑦", "𝐷: 𝑌𝑎𝑎𝑟𝑢𝑚𝑒𝑦𝑦 𝑖𝑙𝑙𝑎𝑎"], a: 1 },
+            { q: "6. 𝑌𝑎𝑎𝑟𝑢𝑢 𝑅𝑜𝑚𝑏𝑎𝑎 𝑙𝑜𝑣𝑒 𝐸𝑥𝑝𝑟𝑒𝑠𝑠 𝑝𝑎𝑛𝑛𝑎 𝑚𝑎𝑡𝑡𝑜𝑚𝑚", opts: ["𝐴: 𝑁𝑎𝑎", "𝐵: 𝑁𝑒𝑒", "𝐶: 𝑌𝑎𝑎𝑟𝑢𝑚𝑒𝑦𝑦 𝐼𝑙𝑙𝑎", "𝐷: (None)"], a: 0 },
+            { q: "7. 𝑌𝑎𝑎𝑟𝑢𝑢 𝑓𝑖𝑟𝑠𝑡 𝑢ℎ 𝑠𝑜𝑟𝑟𝑦𝑦 𝑘𝑒𝑝𝑝𝑎𝑎", opts: ["𝐴: 𝑁𝑎𝑎𝑎", "𝐵: 𝑁𝑒𝑒", "𝐶: 𝑅𝑒𝑛𝑑𝑢𝑢 𝑝𝑒𝑟𝑢𝑚𝑒𝑦", "𝐷: (None)"], a: 1 },
+            { q: "8. 𝑌𝑎𝑎𝑟𝑢𝑘𝑢 𝐸𝐺𝑂 𝑘𝑎𝑎𝑡𝑢𝑣𝑎𝑎𝑎", opts: ["𝐴: 𝑁𝑒𝑒𝑒", "𝐵: 𝑁𝑎𝑎𝑎", "𝐶: 𝑦𝑎𝑎𝑟𝑢𝑚𝑒𝑦𝑦 𝑖𝑙𝑙𝑎𝑎", "𝐷: (None)"], a: 1 },
+            { q: "9. 𝑁𝑎𝑎 𝑢𝑛𝑎𝑘𝑘𝑢𝑢 𝑓𝑖𝑟𝑠𝑡 𝑑𝑒𝑑𝑖𝑐𝑎𝑡𝑒 𝑝𝑎𝑛𝑛𝑎 𝑠𝑜𝑛𝑔 𝑒𝑡ℎ𝑢𝑢", opts: ["𝐴: 𝐼𝑛𝑛𝑢 𝑘𝑜𝑛𝑗𝑎 𝑛𝑒𝑟𝑎𝑚𝑚", "𝐵: 𝑆𝑎𝑎𝑟𝑎 𝐾𝑎𝑎𝑡ℎ𝑢𝑢", "𝐶: 𝑆𝑎ℎ𝑎𝑦𝑎𝑛𝑒𝑦", "𝐷: (None)"], a: 2 },
+            { q: "10. 𝐸𝑛𝑛𝑜𝑑𝑎 𝐹𝑎𝑣𝑜𝑟𝑖𝑡𝑒 𝑀𝑜𝑣𝑖𝑒𝑒", opts: ["𝐴: 𝑀𝑜𝑢𝑛𝑎 𝑅𝑎𝑎𝑔𝑎𝑚", "𝐵: 𝐷𝑎𝑑𝑎", "𝐶: 𝐽𝑜𝑒", "𝐷: (None)"], a: 0 }
+        ];
+
+        const MEMORIES_DATA = [
+            { color: "radial-gradient(circle at 35% 35%, #FF85A1 0%, #FF4F81 50%, #D81159 100%)", img: "assets/img-1.jpg", fallback: "assets/img-1.jpg", caption: "𝑂𝑢𝑟 𝐹𝑎𝑣𝑜𝑖𝑟𝑡𝑒🤌🏻" },
+            { color: "radial-gradient(circle at 35% 35%, #FF99C8 0%, #FF2A85 50%, #C70039 100%)", img: "assets/img-2.jpg", fallback: "https://placehold.co/500x400/FF1493/FFF?text=Safe+Place+2", caption: "𝑀𝑦𝑦 𝑠𝑎𝑓𝑒𝑠𝑡 𝑝𝑙𝑎𝑐𝑒😭🧿" },
+            { color: "radial-gradient(circle at 35% 35%, #C77DFF 0%, #9D4EDD 50%, #5B21B6 100%)", img: "assets/img-3.jpg", fallback: "https://placehold.co/400x400/9D4EDD/FFF?text=Cute+3", caption: "𝐹𝑒𝑙𝑡 𝐶𝑢𝑡𝑒ℎℎℎℎℎ😻😹" },
+            { color: "radial-gradient(circle at 35% 35%, #48CAE4 0%, #00B4D8 50%, #03045E 100%)", img: "assets/img-4.jpg", fallback: "https://placehold.co/600x450/00B4D8/FFF?text=First+Pic+4", caption: "𝐹𝑖𝑟𝑠𝑡 𝑃𝑖𝑐 𝑡𝑜𝑔𝑒𝑡ℎ𝑒𝑟🤍🪐" },
+            { color: "radial-gradient(circle at 35% 35%, #52B788 0%, #2D6A4F 50%, #1B4332 100%)", img: "assets/img-5.jpg", fallback: "https://placehold.co/450x600/2D6A4F/FFF?text=Fight+Pic+5", caption: "𝑃𝑖𝑐 𝑊𝑖𝑡ℎ 𝑎 𝐹𝑖𝑔ℎ𝑡𝑡😹🎀" },
+            { color: "radial-gradient(circle at 35% 35%, #FFB703 0%, #FB8500 50%, #D90429 100%)", img: "assets/img-6.jpg", fallback: "https://placehold.co/500x500/FB8500/FFF?text=Forever+6", caption: "𝐵𝑒 𝑊𝑖𝑡ℎ 𝑀𝑒𝑒 𝐿𝑖𝑘𝑒 𝑇ℎ𝑖𝑠 𝐹𝑜𝑟𝑒𝑣𝑒𝑟 𝑇ℎ𝑎𝑛𝑔𝑎𝑚𝑎𝑎𝑎🫂🧿🙈" }
+        ];
+
+        const LOVE_LETTER_TEXT = `𝐻𝑎𝑝𝑝𝑦 𝐵𝑖𝑟𝑡ℎ𝑑𝑎𝑦 𝑡ℎ𝑎𝑛𝑔𝑜𝑜🫶🏻\n\n𝑇𝑛𝑥 𝐹𝑜𝑟 𝐶𝑜𝑚𝑖𝑛𝑔 𝐼𝑛𝑡𝑜 𝑀𝑦𝑦 𝐿𝑖𝑓𝑒 𝑃𝑎𝑎..𝑁𝑒𝑒 𝐸𝑝𝑝𝑑 𝐸𝑛𝑛 𝐿𝑖𝑓𝑒 𝐿𝑎 𝑉𝑎𝑛𝑡ℎ𝑎𝑛𝑢 𝑇ℎ𝑒𝑟𝑖𝑦𝑎𝑙𝑎𝑎.. 𝐴𝑛𝑎𝑎 𝐸𝑛𝑛 𝐿𝑖𝑓𝑒𝑒 𝐹𝑢𝑙𝑙𝑎𝑎 𝐸𝑛𝑛 𝐾𝑢𝑑𝑎𝑣𝑒𝑦𝑦𝑦 𝐼𝑟𝑢𝑢🫴🏻𝐼𝑡ℎ𝑢𝑢 𝑀𝑎𝑡ℎ𝑖𝑟𝑖 𝑁𝑒𝑟𝑎𝑦𝑎 𝐵𝑖𝑟𝑡ℎ𝑑𝑎𝑦 𝑁𝑎𝑎 𝐾𝑢𝑑𝑎 𝑆𝑒𝑛𝑡ℎ𝑢 𝐶𝑒𝑙𝑒𝑏𝑟𝑎𝑡𝑒 𝑃𝑎𝑛𝑛𝑎𝑛𝑢𝑚𝑚🖇️𝑈𝑛𝑛𝑎 𝑁𝑎𝑎𝑛 𝐸𝑣𝑎𝑙𝑜𝑣𝑜 𝐻𝑢𝑟𝑡 𝑃𝑎𝑛𝑛𝑖𝑟𝑢𝑘𝑘𝑒𝑛𝑛 𝐴𝑎𝑛𝑎𝑙𝑢𝑚 𝑁𝑒𝑒 𝐸𝑛𝑛 𝐾𝑢𝑑𝑎𝑣𝑒 𝐼𝑟𝑢𝑘𝑘𝑎𝑎 𝑁𝑎𝑎 𝑈𝑛𝑛𝑎 𝐻𝑢𝑟𝑡 𝑃𝑎𝑛𝑛𝑎𝑡ℎ𝑢𝑘𝑢𝑢 𝑆𝑜𝑟𝑟𝑦𝑦𝑦😒𝑈𝑛𝑛 𝐸𝑑𝑎𝑡ℎ𝑢𝑙𝑎 𝑉𝑒𝑟𝑎 𝑌𝑎𝑎𝑟𝑢𝑢 𝐼𝑟𝑢𝑛𝑡ℎ𝑎𝑙𝑢𝑚𝑚 𝐸𝑝𝑝𝑎𝑣𝑜 𝐸𝑛𝑛𝑎𝑎 𝑉𝑖𝑡𝑡𝑢𝑡𝑢 𝑃𝑜𝑖𝑟𝑢𝑝𝑝𝑎𝑛𝑔𝑎𝑎 𝐴𝑛𝑎𝑎𝑎 𝐼𝑝𝑝𝑎𝑣𝑢𝑚𝑚 𝑁𝑒𝑒 𝐸𝑛𝑛𝑘𝑢𝑑𝑎𝑣𝑒𝑦𝑦 𝐼𝑟𝑢𝑘𝑘𝑎𝑎 𝑇𝑛𝑥 𝑝𝑎𝑎🥹 𝐸𝑛𝑔𝑎 𝐴𝑡ℎ𝑡ℎ𝑎 𝐾𝑢 𝐴𝑝𝑟𝑚𝑚 𝐸𝑛𝑎𝑘𝑘𝑢𝑢 𝑁𝑒𝑟𝑎𝑦𝑎 𝐿𝑜𝑣𝑒 𝐾𝑢𝑑𝑢𝑘𝑘𝑢𝑟𝑎𝑡ℎ𝑢𝑢 𝑁𝑒𝑒𝑑ℎ𝑎𝑛𝑛 𝐸𝑝𝑝𝑎𝑣𝑢𝑚 𝐼𝑝𝑝𝑑𝑦𝑒 𝐼𝑟𝑢𝑢𝑢 𝑁𝑎𝑎𝑛𝑢𝑚𝑚 𝐾𝑢𝑑𝑎𝑣𝑒𝑒 𝐼𝑟𝑢𝑘𝑘𝑒𝑛𝑛𝑛🫂\n\n𝑌𝑜𝑢𝑟 𝑀𝑦𝑦 𝐺𝐸𝑀💎\n\n𝐼 𝐴𝑚 𝑁𝑜𝑡 𝑇ℎ𝑒 𝑂𝑛𝑒 𝑇ℎ𝑎t 𝑌𝑜𝑢 𝐷𝑒𝑠𝑒𝑟𝑣𝑒🤍\n𝐵𝑢𝑡 𝑌𝑜𝑢𝑟 𝑇ℎ𝑒 𝑂𝑛𝑙𝑦𝑦 𝑂𝑛𝑒 𝑇ℎ𝑎𝑡 𝐼 𝐷𝑒𝑠𝑒𝑟𝑣𝑒🤌🏻💗\n\n𝐴𝑟𝑒 𝑌𝑜𝑢𝑢 𝑅𝑒𝑎𝑑𝑦 𝑇𝑜 𝐵𝑒𝑒 𝑀𝑦𝑦 𝐵𝑒𝑡𝑡𝑒𝑟 𝐻𝑎𝑙𝑓🤭🤷🏻‍♀️\n\n𝐴𝑛𝑦𝑤𝑎𝑦𝑠, 𝐸𝑛𝑗𝑜𝑦 𝑌𝑜𝑢𝑟 𝑆𝑝𝑒𝑐𝑖𝑎𝑙 𝐷𝑎𝑦𝑦 𝑊𝑖𝑡ℎ 𝐿𝑜𝑣𝑒 𝐴𝑛𝑑 𝐿𝑎𝑢𝑔ℎ𝑡𝑒𝑟🫶🏻😻`;
+
+        let activePageIndex = 1;
+        let currentQuestionIndex = 0;
+        let userScore = 0;
+        let typewriterTimer = null;
+        let audioInitialized = false;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => document.getElementById('loading-screen').classList.add('fade-out'), 1200);
+            startPersistentBackgroundEngines();
+            attachGlobalDOMListeners();
+            setupMouseGlowTracking();
+        });
+
+        function startPersistentBackgroundEngines() {
+            const container = document.getElementById('particle-container');
+            const visualPool = ['❤️️', '💖', '✨', '🌸', '🌹'];
+            setInterval(() => {
+                const particle = document.createElement('div');
+                particle.className = 'floating-heart';
+                particle.textContent = visualPool[Math.floor(Math.random() * visualPool.length)];
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.fontSize = (Math.random() * 16 + 14) + 'px';
+                const dur = Math.random() * 4 + 5;
+                particle.style.animationDuration = dur + 's';
+                container.appendChild(particle);
+                setTimeout(() => particle.remove(), dur * 1000);
+            }, 400);
+        }
+
+        function setupMouseGlowTracking() {
+            const ambientGlow = document.getElementById('ambient-glow');
+            const tracking = (clientX, clientY) => { ambientGlow.style.left = clientX + 'px'; ambientGlow.style.top = clientY + 'px'; };
+            window.addEventListener('mousemove', (e) => tracking(e.clientX, e.clientY));
+            window.addEventListener('touchmove', (e) => { if(e.touches.length > 0) tracking(e.touches[0].clientX, e.touches[0].clientY); }, {passive: true});
+        }
+
+        function attachGlobalDOMListeners() {
+            const musicBtn = document.getElementById('music-toggle');
+            const bgMusic = document.getElementById('bg-music');
+
+            musicBtn.addEventListener('click', () => {
+                if (bgMusic.paused) {
+                    bgMusic.play().then(() => musicBtn.classList.add('playing')).catch(() => {});
+                } else {
+                    bgMusic.pause();
+                    musicBtn.classList.remove('playing');
+                }
+            });
+
+            // Smooth automatic background audio trigger on first user interaction
+            const triggerAudio = () => {
+                if (!audioInitialized) {
+                    bgMusic.play().then(() => {
+                        musicBtn.classList.add('playing');
+                        audioInitialized = true;
+                    }).catch(() => {});
+                }
+            };
+            window.addEventListener('click', triggerAudio, { once: true });
+            window.addEventListener('touchstart', triggerAudio, { once: true });
+
+            document.getElementById('login-btn').addEventListener('click', () => {
+                const input = document.getElementById('secret-password');
+                if (input.value.trim() === '1408') {
+                    triggerAudio();
+                    transitionToPage(2);
+                } else {
+                    document.getElementById('password-hint').classList.remove('hidden');
+                    input.value = '';
+                }
+            });
+
+            document.getElementById('to-page-3').addEventListener('click', () => transitionToPage(3, setupProposalEngine));
+            document.getElementById('to-page-4').addEventListener('click', () => {
+                document.getElementById('heart-popup').classList.add('hidden');
+                transitionToPage(4, setupQuizEngine);
+            });
+            document.getElementById('to-page-5').addEventListener('click', () => transitionToPage(5, setupMemoriesEngine));
+            document.getElementById('to-page-6').addEventListener('click', () => transitionToPage(6, setupTypewriterEngine));
+            document.getElementById('loop-back').addEventListener('click', () => { clearInterval(typewriterTimer); transitionToPage(1); });
+        }
+
+        function transitionToPage(targetNum, callback = null) {
+            document.getElementById(`page-${activePageIndex}`).classList.remove('active');
+            setTimeout(() => {
+                document.getElementById(`page-${activePageIndex}`).classList.add('hidden');
+                const target = document.getElementById(`page-${targetNum}`);
+                target.classList.remove('hidden');
+                void target.offsetWidth;
+                target.classList.add('active');
+                activePageIndex = targetNum;
+
+                const topBar = document.getElementById('top-progress-bar');
+                if (targetNum === 4) topBar.classList.add('visible');
+                else topBar.classList.remove('visible');
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                if (callback) callback();
+            }, 300);
+        }
+
+        /* ==========================================================================
+           PROPOSAL SYSTEM (PAGE 3)
+           ========================================================================== */
+        function setupProposalEngine() {
+            const noBtn = document.getElementById('proposal-no');
+            const yesBtn = document.getElementById('proposal-yes');
+
+            noBtn.style.position = 'absolute'; noBtn.style.left = 'auto'; noBtn.style.top = 'auto';
+
+            const shiftTarget = (e) => {
+                const pad = 20;
+                const maxW = window.innerWidth - noBtn.offsetWidth - pad;
+                const maxH = window.innerHeight - noBtn.offsetHeight - pad;
+                const X = Math.max(pad, Math.floor(Math.random() * maxW));
+                const Y = Math.max(pad, Math.floor(Math.random() * maxH));
+
+                noBtn.style.position = 'fixed'; noBtn.style.left = `${X}px`; noBtn.style.top = `${Y}px`;
+                e.preventDefault(); e.stopPropagation();
+            };
+
+            noBtn.addEventListener('mouseenter', shiftTarget);
+            noBtn.addEventListener('touchstart', shiftTarget, {passive: false});
+
+            yesBtn.onclick = () => {
+                noBtn.style.position = 'static';
+                document.getElementById('heart-popup').classList.remove('hidden');
+                fireworksCelebrationBurst();
+            };
+        }
+
+        /* ==========================================================================
+           QUIZ ENGINE WITH CORRECT/WRONG GIF POPUP (PAGE 4)
+           ========================================================================== */
+        function setupQuizEngine() {
+            currentQuestionIndex = 0;
+            userScore = 0;
+            document.getElementById('quiz-active-interface').classList.remove('hidden');
+            document.getElementById('quiz-score-interface').classList.add('hidden');
+            renderQuizQuestion();
+        }
+
+        function renderQuizQuestion() {
+            const data = QUIZ_DATA[currentQuestionIndex];
+            document.getElementById('top-progress-fill').style.width = `${(currentQuestionIndex / QUIZ_DATA.length) * 100}%`;
+            document.getElementById('quiz-question').textContent = data.q;
+            
+            const options = document.querySelectorAll('.option-btn');
+            options.forEach((btn, idx) => {
+                if (data.opts[idx]) {
+                    btn.style.display = 'block';
+                    btn.textContent = data.opts[idx];
+                    btn.onclick = () => { handleOptionSelection(idx, data.a); };
+                } else {
+                    btn.style.display = 'none';
+                }
+            });
+        }
+
+        function handleOptionSelection(selectedIdx, correctIdx) {
+            const popup = document.getElementById('quiz-feedback-popup');
+            const gifImg = document.getElementById('feedback-image-slot');
+            const statusTxt = document.getElementById('feedback-status');
+            const continueBtn = document.getElementById('feedback-continue-btn');
+
+            const isCorrect = (selectedIdx === correctIdx);
+            if (isCorrect) {
+                userScore += 10;
+                gifImg.src = "assets/happy-dudu.gif"; 
+                statusTxt.textContent = "Correct Answer! Perfect 💖";
+                statusTxt.style.color = "#4BB543";
+            } else {
+                gifImg.src = "assets/sad-bubu.gif"; 
+                statusTxt.textContent = "Oops! Wrong Answer 🥺";
+                statusTxt.style.color = "#FF4F81";
+            }
+
+            popup.classList.remove('hidden');
+
+            continueBtn.onclick = () => {
+                popup.classList.add('hidden');
+                currentQuestionIndex++;
+                if (currentQuestionIndex < QUIZ_DATA.length) renderQuizQuestion();
+                else renderQuizFinalScore();
+            };
+        }
+
+        function renderQuizFinalScore() {
+            document.getElementById('top-progress-fill').style.width = `100%`;
+            document.getElementById('quiz-active-interface').classList.add('hidden');
+            document.getElementById('live-score').textContent = userScore;
+            
+            const scoreGifElement = document.getElementById('score-gif');
+            if (userScore >= 0 && userScore <= 20) {
+                scoreGifElement.src = "assets/angry.gif";
+            } else if (userScore > 20 && userScore <= 40) {
+                scoreGifElement.src = "assets/normal.gif";
+            } else if (userScore > 40 && userScore <= 60) {
+                scoreGifElement.src = "assets/normalhappy.gif";
+            } else if (userScore > 60 && userScore <= 80) {
+                scoreGifElement.src = "assets/dudububuhappy.gif";
+            } else if (userScore > 80 && userScore <= 100) {
+                scoreGifElement.src = "assets/happy.gif";
+            }
+
+            document.getElementById('quiz-score-interface').classList.remove('hidden');
+            fireworksCelebrationBurst();
+        }
+
+        /* ==========================================================================
+           REALISTIC BALLOONS & ADAPTIVE POLAROID GALLERY (PAGE 5)
+           ========================================================================== */
+        function setupMemoriesEngine() {
+            const yard = document.getElementById('balloon-yard');
+            const footerBtn = document.getElementById('to-page-6');
+            const globalModal = document.getElementById('global-polaroid-modal');
+            const modalTarget = document.getElementById('polaroid-card-target');
+            const closeBtn = document.getElementById('close-polaroid-btn');
+
+            yard.innerHTML = ''; footerBtn.classList.add('hidden');
+            let popped = 0;
+
+            MEMORIES_DATA.forEach((item) => {
+                const node = document.createElement('div'); 
+                node.className = 'balloon-node';
+                
+                const body = document.createElement('div'); 
+                body.className = 'balloon-body'; 
+                body.style.background = item.color;
+                
+                const string = document.createElement('div');
+                string.className = 'balloon-string';
+
+                node.appendChild(body);
+                node.appendChild(string);
+                yard.appendChild(node);
+
+                node.addEventListener('click', () => {
+                    const popAudio = document.getElementById('pop-sound');
+                    popAudio.currentTime = 0;
+                    popAudio.play().catch(() => {});
+                    
+                    body.style.transform = 'scale(0)';
+                    string.style.transform = 'scale(0)';
+                    setTimeout(() => node.classList.add('hidden'), 250);
+
+                    // Dynamic image loader that adapts the Polaroid container to image dimensions
+                    const imgTest = new Image();
+                    imgTest.src = item.img;
+                    imgTest.onload = () => {
+                        const ratio = imgTest.naturalHeight / imgTest.naturalWidth;
+                        renderPolaroidModal(item.img, item.fallback, item.caption, ratio);
+                    };
+                    imgTest.onerror = () => {
+                        renderPolaroidModal(item.fallback, item.fallback, item.caption, 1);
+                    };
+
+                    globalModal.classList.remove('hidden');
+                    popped++;
+
+                    closeBtn.onclick = () => {
+                        globalModal.classList.add('hidden');
+                        if (popped === MEMORIES_DATA.length) footerBtn.classList.remove('hidden');
+                    };
+                }, { once: true });
+            });
+        }
+
+        function renderPolaroidModal(imgSrc, fallbackSrc, captionText, ratio) {
+            const modalTarget = document.getElementById('polaroid-card-target');
+            let frameMaxWidth = ratio > 1.2 ? '260px' : (ratio < 0.8 ? '290px' : '280px');
+            
+            modalTarget.style.maxWidth = frameMaxWidth;
+            modalTarget.innerHTML = `
+                <div class="polaroid-img-container">
+                    <img src="${imgSrc}" onerror="this.src='${fallbackSrc}'" class="polaroid-img" alt="Memory">
+                </div>
+                <div class="polaroid-caption">${captionText}</div>
+            `;
+        }
+
+        /* ==========================================================================
+           TYPEWRITER ENGINE FOR LAST PAGE (SMOOTH & NATURAL TYPING)
+           ========================================================================== */
+        function setupTypewriterEngine() {
+            const paper = document.getElementById('typewriter-content');
+            const scroller = document.getElementById('letter-scroller');
+            const skip = document.getElementById('skip-typewriter');
+            const loopBtn = document.getElementById('loop-back');
+            
+            paper.textContent = ''; 
+            loopBtn.classList.add('hidden'); 
+            skip.classList.remove('hidden'); 
+            scroller.scrollTop = 0;
+            paper.classList.add('cursor-blink');
+            
+            clearInterval(typewriterTimer);
+
+            let ptr = 0;
+            
+            // Smoother interval with slightly variable timing to mimic organic typing
+            function typeNextChar() {
+                if (ptr < LOVE_LETTER_TEXT.length) {
+                    const char = LOVE_LETTER_TEXT.charAt(ptr);
+                    paper.textContent += char; 
+                    ptr++;
+                    
+                    // Auto scroll smoothly as text flows
+                    scroller.scrollTop = scroller.scrollHeight;
+                    
+                    // Add slight natural variance or punctuation pauses if needed, 
+                    // keeping baseline speed smooth (e.g., ~28ms per character)
+                    let delay = 28;
+                    if (char === '.' || char === '!' || char === '?') {
+                        delay = 120; // Natural pause after sentences
+                    } else if (char === '\n') {
+                        delay = 80;  // Pause for line breaks
+                    }
+                    
+                    typewriterTimer = setTimeout(typeNextChar, delay);
+                } else { 
+                    paper.classList.remove('cursor-blink');
+                    skip.classList.add('hidden'); 
+                    loopBtn.classList.remove('hidden'); 
+                    scroller.scrollTop = scroller.scrollHeight;
+                }
+            }
+
+            typewriterTimer = setTimeout(typeNextChar, 100);
+
+            skip.onclick = () => {
+                clearTimeout(typewriterTimer);
+                paper.textContent = LOVE_LETTER_TEXT;
+                paper.classList.remove('cursor-blink');
+                skip.classList.add('hidden'); 
+                loopBtn.classList.remove('hidden'); 
+                scroller.scrollTop = scroller.scrollHeight;
+            };
+        }
+
+        function fireworksCelebrationBurst() {
+            if (typeof confetti !== 'undefined') {
+                const end = Date.now() + 2000;
+                (function frame() {
+                    confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#FF4F81', '#FF1493'] });
+                    confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#FF4F81', '#FF1493'] });
+                    if (Date.now() < end) requestAnimationFrame(frame);
+                }());
+            }
+        }
+    </script>
+</body>
+</html>
